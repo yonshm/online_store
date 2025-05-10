@@ -46,7 +46,17 @@
           </div>
         </div>
         <div class="col">
-          &nbsp;
+          <div class="mb-3 row">
+            <label class="col-lg-2 col-md-6 col-sm-12 col-form-label">Categorie:</label>
+            <div class="col-lg-10 col-md-6 col-sm-12">
+              <select name="category_id" id="category_id">
+                <option value="-1">Select Category</option>
+                @foreach ($viewData['categories'] as $cat)
+                <option value="{{$cat->id}}" {{$cat->name == $viewData['product']->getCategory() ? 'selected' : ''}}>{{$cat->name}}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
         </div>
       </div>
       <div class="mb-3">

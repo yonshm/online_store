@@ -42,9 +42,21 @@
               <input class="form-control" type="file" name="image">
             </div>
           </div>
+
         </div>
         <div class="col">
-          &nbsp;
+          
+          <div class="mb-3 row">
+            <label class="col-lg-2 col-md-6 col-sm-12 col-form-label">Categorie:</label>
+            <div class="col-lg-10 col-md-6 col-sm-12">
+              <select name="category_id" id="category_id">
+                <option value="-1">Select Category</option>
+                @foreach ($viewData['categories'] as $cat)
+                <option value="{{$cat->id}}">{{$cat->name}}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
         </div>
       </div>
       <div class="mb-3">
@@ -66,6 +78,8 @@
         <tr>
           <th scope="col">ID</th>
           <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Category</th>
           <th scope="col">Edit</th>
           <th scope="col">Delete</th>
         </tr>
@@ -75,6 +89,9 @@
         <tr>
           <td>{{ $product->getId() }}</td>
           <td>{{ $product->getName() }}</td>
+          <td>{{ $product->getDescription() }}</td>
+          <td>{{ $product->getCategory() }}</td>
+          
           <td>
             <a class="btn btn-primary" href="{{route('admin.product.edit', ['id'=> $product->getId()])}}">
               <i class="bi-pencil"></i>

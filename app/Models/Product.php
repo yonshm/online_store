@@ -26,6 +26,7 @@ class Product extends Model
             "description" => "required",
             "price" => "required|numeric|gt:0",
             'image' => 'image',
+            'category_id' => 'required|exists:categories,id'
         ]);
     }
 
@@ -58,7 +59,7 @@ class Product extends Model
     {
         $this->attributes['name'] = $name;
     }
-
+    
     public function getDescription()
     {
         return $this->attributes['description'];
@@ -68,7 +69,7 @@ class Product extends Model
     {
         $this->attributes['description'] = $description;
     }
-
+    
     public function getImage()
     {
         return $this->attributes['image'];
@@ -78,7 +79,7 @@ class Product extends Model
     {
         $this->attributes['image'] = $image;
     }
-
+    
     public function getPrice()
     {
         return $this->attributes['price'];
@@ -88,12 +89,20 @@ class Product extends Model
     {
         $this->attributes['price'] = $price;
     }
+    public function getCategory()
+    {
+        return $this->category ? $this->category->name : null;
+    }
+    public function setCategoryId($category)
+    {
+        $this->attributes['category_id'] = $category;
+    }
 
     public function getCreatedAt()
     {
         return $this->attributes['created_at'];
     }
-
+    
     public function setCreatedAt($createdAt)
     {
         $this->attributes['created_at'] = $createdAt;
@@ -123,4 +132,10 @@ class Product extends Model
     {
         $this->items = $items;
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+    
 }
