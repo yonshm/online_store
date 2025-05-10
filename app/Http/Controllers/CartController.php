@@ -32,7 +32,15 @@ class CartController extends Controller
     public function add(Request $request, $id)
     {
         $products = $request->session()->get("products");
-        $products[$id] = $request->input('quantity');
+        
+        $product = Product::findOrFail($id);
+        $productQuantity = (int) $request->input('quantity');
+
+        if($productQuantity > $product->getQuantity_store()){
+            return redirect()->back()->with('error','La quantité demandée dépasse le stock disponible.');
+        }
+        $products[$id] = $productQuantity;
+
         $request->session()->put('products', $products);
 
         return redirect()->route('cart.index');
