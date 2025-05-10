@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\admin\AdminCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,12 +30,20 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('admin')->group(function () {
+
     Route::get('/admin', 'App\Http\Controllers\Admin\AdminHomeController@index')->name("admin.home.index");
+
+    // Products Routes
     Route::get('/admin/products', 'App\Http\Controllers\Admin\AdminProductController@index')->name("admin.product.index");
     Route::post('/admin/products/store', 'App\Http\Controllers\Admin\AdminProductController@store')->name("admin.product.store");
     Route::delete('/admin/products/{id}/delete', 'App\Http\Controllers\Admin\AdminProductController@delete')->name("admin.product.delete");
     Route::get('/admin/products/{id}/edit', 'App\Http\Controllers\Admin\AdminProductController@edit')->name("admin.product.edit");
     Route::put('/admin/products/{id}/update', 'App\Http\Controllers\Admin\AdminProductController@update')->name("admin.product.update");
+
+
+    // Categories Routes
+    Route::get('/admin/categories', [AdminCategoryController::class, 'index'])->name("admin.category.index");
+    Route::resource('adminCategories',AdminCategoryController::class);
 });
 
 Auth::routes();
