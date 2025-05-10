@@ -59,6 +59,12 @@
                             </div>
                         </div>
                     </div>
+                    <div class="mb-3 row">
+                        <div class="col">
+                            <label for="quantity_store">Quantite Store</label>
+                            <input type="number" name="quantity_store" class="form-input">
+                        </div>
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">Description</label>
                         <textarea class="form-control" name="description" rows="3">{{ old('description') }}</textarea>
@@ -91,6 +97,7 @@
                             <th scope="col">Name</th>
                             <th scope="col">Description</th>
                             <th scope="col">Category</th>
+                            <th scope="col">Stock</th>
                             <th scope="col">Edit</th>
                             <th scope="col">Delete</th>
                         </tr>
@@ -102,6 +109,7 @@
                                 <td>{{ $product->getName() }}</td>
                                 <td>{{ $product->getDescription() }}</td>
                                 <td>{{ $product->getCategory() }}</td>
+                                <td>{{ $product->getQuantity_store() }}</td>
 
                                 <td>
                                     <a class="btn btn-primary"

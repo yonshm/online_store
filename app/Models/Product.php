@@ -98,6 +98,14 @@ class Product extends Model
         $this->attributes['category_id'] = $category;
     }
 
+    function getQuantity_store(){
+        return $this->attributes['quantity_store'];
+    }
+
+    function setQuantity_store($quantity_store){
+        $this->attributes['quantity_store'] = $quantity_store;
+    }
+
     public function getCreatedAt()
     {
         return $this->attributes['created_at'];

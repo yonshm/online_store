@@ -29,6 +29,7 @@ class AdminProductController extends Controller
         $newProduct->setPrice($request->input('price'));
         $newProduct->setImage('game.png');
         $newProduct->setCategoryId($request->input('category_id'));
+        $newProduct->setQuantity_store($request->input('quantity_store'));
 
         $newProduct->save();
 
@@ -65,6 +66,7 @@ class AdminProductController extends Controller
         $product->setName($request->input('name'));
         $product->setDescription($request->input('description'));
         $product->setPrice($request->input('price'));
+        $product->setQuantity_store($request->input('quantity_store'));
 
         if ($request->hasFile('image')) {
             $imageName = $product->getId() . '.' . $request->file('image')->extension();

@@ -59,6 +59,12 @@
           </div>
         </div>
       </div>
+      <div class="mb-3 row">
+                        <div class="col">
+                            <label for="quantity_store">Quantite Store</label>
+                            <input type="number" name="quantity_store" class="form-input" value="{{ $viewData['product']->getQuantity_store() }}">
+                        </div>
+                    </div>
       <div class="mb-3">
         <label class="form-label">Description</label>
         <textarea class="form-control" name="description"
