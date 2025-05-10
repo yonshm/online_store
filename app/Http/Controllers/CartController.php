@@ -73,6 +73,8 @@ class CartController extends Controller
                 $item->setOrderId($order->getId());
                 $item->save();
                 $total = $total + ($product->getPrice()*$quantity);
+                $product->quantity_store = $product->getQuantity_store() - $quantity;
+                $product->save();
             }
             $order->setTotal($total);
             $order->save();
