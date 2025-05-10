@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\admin\AdminCategoryController;
 
 /*
@@ -44,6 +45,7 @@ Route::middleware('admin')->group(function () {
     // Categories Routes
     Route::get('/admin/categories', [AdminCategoryController::class, 'index'])->name("admin.category.index");
     Route::resource('adminCategories',AdminCategoryController::class);
+    Route::get('/admin/products/filter', [AdminProductController::class, 'filter'])->name('admin.product.filter');
 });
 
 Auth::routes();
