@@ -131,6 +131,7 @@
                                     <form action="{{ route('admin.product.delete', $product->getId()) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
+                                        
                                         <button class="btn btn-danger">
                                             <i class="bi-trash"></i>
                                         </button>
@@ -155,14 +156,24 @@
                         })
                         .then(response => response.json())
                         .then(data => {
+                            let bgColor = '';
+                            
                             let rows = '';
 
                             data.forEach(product => {
-                                rows += `<tr>
+                                if (product.quantity_store == 0) {
+                                    bgColor = 'table-danger';
+                                } else if (product.quantity_store < 10) {
+                                    bgColor = 'table-warning';
+                                } else {
+                                    bgColor = 'table-success';
+                                }
+                                rows += `<tr class="${bgColor}">
                                     <td>${product.id}</td>
                                     <td>${product.name}</td>
                                     <td>${product.description}</td>
                                     <td>${product.category ? product.category.name : "No category"}</td>
+                                    <td>${product.quantity_store}</td>
                                     <td>
                                         <a class="btn btn-primary" href="/admin/product/edit/${product.id}">
                                             <i class="bi-pencil"></i>
