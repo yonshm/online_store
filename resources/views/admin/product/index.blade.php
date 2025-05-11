@@ -49,7 +49,7 @@
                             <div class="mb-3 row">
                                 <label class="col-lg-2 col-md-6 col-sm-12 col-form-label">Categorie:</label>
                                 <div class="col-lg-10 col-md-6 col-sm-12">
-                                    <select name="category_id" id="category_id" class="form-select" >
+                                    <select name="category_id" id="category_id" class="form-select">
                                         <option value="-1">Select Category</option>
                                         @foreach ($viewData['categories'] as $cat)
                                             <option value="{{ $cat->id }}">{{ $cat->name }}</option>
@@ -104,7 +104,17 @@
                     </thead>
                     <tbody id="product-table-body">
                         @foreach ($viewData['products'] as $product)
-                            <tr>
+                            @php
+                                $bgColor = '';
+                                if ($product->quantity_store == 0) {
+                                    $bgColor = 'table-danger';
+                                } elseif ($product->quantity_store < 10) {
+                                    $bgColor = 'table-warning';
+                                } else {
+                                    $bgColor = 'table-success';
+                                }
+                            @endphp
+                            <tr class="{{$bgColor}}">
                                 <td>{{ $product->getId() }}</td>
                                 <td>{{ $product->getName() }}</td>
                                 <td>{{ $product->getDescription() }}</td>
@@ -143,10 +153,10 @@
                                 'X-Requested-With': 'XMLHttpRequest'
                             }
                         })
-                        .then(response => response.json()) 
-                            .then(data => {
+                        .then(response => response.json())
+                        .then(data => {
                             let rows = '';
-                            
+
                             data.forEach(product => {
                                 rows += `<tr>
                                     <td>${product.id}</td>
@@ -171,7 +181,7 @@
                             });
 
                             document.getElementById('product-table-body').innerHTML = rows;
-                            if(data.length == 0){
+                            if (data.length == 0) {
                                 document.getElementById('product-table-body').innerHTML = `
                                 <tr class="text-center">
                                     <td colspan='6'>Aucune Product finded</td>    

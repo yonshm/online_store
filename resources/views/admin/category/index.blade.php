@@ -56,7 +56,7 @@
       </thead>
       <tbody>
         @foreach ($viewData["Categories"] as $category)
-        <tr>
+        <tr class="">
           <td>{{ $category->id }}</td>
           <td>{{ $category->name }}</td>
           <td>{{ $category->description }}</td>
