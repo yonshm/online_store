@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\admin\AdminCategoryController;
+use App\Http\Controllers\Admin\DiscountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,9 @@ Route::middleware('admin')->group(function () {
     Route::get('/admin/categories', [AdminCategoryController::class, 'index'])->name("admin.category.index");
     Route::resource('adminCategories',AdminCategoryController::class);
     Route::get('/admin/products/filter', [AdminProductController::class, 'filter'])->name('admin.product.filter');
+
+    // discounts routes
+    Route::resource('discounts', DiscountController::class);
 });
 
 Auth::routes();
