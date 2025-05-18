@@ -69,10 +69,8 @@ class CartController extends Controller
     $total = 0;
     $now = now();
 
-    // Load all products in cart (with category info if needed)
     $productsInCart = Product::findMany(array_keys($productsInSession));
 
-    // Load global discounts (type = 'all')
     $globalDiscounts = Discount::where('type', 'global')
         ->where('start_date', '<=', $now)
         ->where('end_date', '>=', $now)
@@ -81,7 +79,6 @@ class CartController extends Controller
     foreach ($productsInCart as $product) {
         $quantity = $productsInSession[$product->getId()];
 
-        // Load category & product-specific discounts for this product
         $relevantDiscounts = Discount::where(function ($query) use ($product) {
                 $query->where('type', 'category')
                       ->where('category_id', $product->category_id)
@@ -94,17 +91,13 @@ class CartController extends Controller
             ->where('end_date', '>=', $now)
             ->get();
 
-        // Merge global discounts with relevant discounts
         $activeDiscounts = $globalDiscounts->merge($relevantDiscounts);
 
-        // Sum discount percentages and cap at 90%
         $discountTotal = $activeDiscounts->sum('discount_percentage');
         $discountTotal = min($discountTotal, 90);
-        // Calculate final price after discount
         $originalPrice = $product->getPrice();
         $finalPrice = round($originalPrice * (1 - $discountTotal / 100), 2);
 
-        // Create new order item
         $item = new Item();
         $item->setQuantity($quantity);
         $item->setPrice($finalPrice);
@@ -112,26 +105,21 @@ class CartController extends Controller
         $item->setOrderId($order->getId());
         $item->save();
 
-        // Update total price and product stock
         $total += $finalPrice * $quantity;
         $product->quantity_store = $product->getQuantity_store() - $quantity;
         $product->save();
     }
 
-    // Update order total
     $order->setTotal($total);
     $order->save();
 
-    // Update user balance
     $user = Auth::user();
     $newBalance = $user->getBalance() - $total;
     $user->setBalance($newBalance);
     $user->save();
 
-    // Clear cart
     $request->session()->forget('products');
 
-    // Prepare view data
     $viewData = [
         "title" => "Purchase - Online Store",
         "subtitle" => "Purchase Status",
@@ -140,8 +128,4 @@ class CartController extends Controller
 
     return view('cart.purchase')->with("viewData", $viewData);
 }
-
-
-
-
 }

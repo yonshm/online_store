@@ -150,4 +150,32 @@ class Product extends Model
 {
     return $this->hasMany(Discount::class);
 }
+
+public function getDiscountedPrice()
+{
+    $now = now();
+    $globalDiscounts = Discount::where('type', 'global')
+        ->where('start_date', '<=', $now)
+        ->where('end_date', '>=', $now)
+        ->get();
+    $relevantDiscounts = Discount::where(function ($query) {
+                $query->where('type', 'category')
+                      ->where('category_id', $this->category_id)
+                      ->orWhere(function ($q) {
+                          $q->where('type', 'product')
+                            ->where('product_id', $this->id);
+                      });
+            })
+            ->where('start_date', '<=', $now)
+            ->where('end_date', '>=', $now)
+            ->get();
+     $activeDiscounts = $globalDiscounts->merge($relevantDiscounts);
+
+        $discountTotal = $activeDiscounts->sum('discount_percentage');
+        $discountTotal = min($discountTotal, 90);
+        $originalPrice = $this->getPrice();
+        $finalPrice = round($originalPrice * (1 - $discountTotal / 100), 2);
+
+    return $finalPrice;
+}
 }

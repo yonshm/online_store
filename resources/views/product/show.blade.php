@@ -20,11 +20,20 @@
     <div class="col-md-4">
       <img src="{{ asset('/storage/'.$viewData["product"]->getImage()) }}" class="img-fluid rounded-start">
     </div>
+     @php
+          $originalPrice = $viewData["product"]->getPrice();
+          $discountedPrice = method_exists($viewData["product"], 'getDiscountedPrice') ? $viewData["product"]->getDiscountedPrice() : $originalPrice;
+      @endphp
+      
     <div class="col-md-8">
       <div class="card-body">
-        <h5 class="card-title">
-          {{ $viewData["product"]->getName() }} (${{ $viewData["product"]->getPrice() }})
-        </h5>
+        @if ($discountedPrice < $originalPrice)
+          <span class="text-muted text-decoration-line-through">${{ $originalPrice }}</span>
+          <span class="fw-bold ms-2 text-success">${{ $discountedPrice }}</span>
+        @else
+          <span class="fw-bold">${{ $originalPrice }}</span>
+        @endif
+
         <p class="card-text">{{ $viewData["product"]->getDescription() }}</p>
         <p class="card-text">
         <form method="POST" action="{{ route('cart.add', ['id'=> $viewData['product']->getId()]) }}">
