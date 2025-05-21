@@ -2,9 +2,10 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\admin\AdminCategoryController;
-use App\Http\Controllers\Admin\DiscountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,9 @@ Route::middleware('admin')->group(function () {
 
     // discounts routes
     Route::resource('discounts', DiscountController::class);
+
+    Route::get('admin/adminSuppliers', [SupplierController::class , 'index'])->name("admin.supplier.index");
+    Route::resource('adminSuppliers', SupplierController::class);
 });
 
 Auth::routes();
