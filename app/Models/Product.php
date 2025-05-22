@@ -178,4 +178,10 @@ public function getDiscountedPrice()
 
     return $finalPrice;
 }
+
+public function supplier()
+{
+    return $this->belongsTo(Supplier::class);
+}
+
 }
