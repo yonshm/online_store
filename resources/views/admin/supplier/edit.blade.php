@@ -1,7 +1,5 @@
-@extends('layouts.app')
-
-@section('title', 'Modifier supplier')
-
+@extends('layouts.admin')
+@section('title', 'Modifier Fournisseurs')
 @section('content')
 <div class="container">
     <h2 class="mb-4">Modifier le supplier</h2>

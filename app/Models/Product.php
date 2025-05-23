@@ -18,7 +18,16 @@ class Product extends Model
      * $this->attributes['updated_at'] - timestamp - contains the product update date
      * $this->items - Item[] - contains the associated items
      */
-
+    protected $fillable = [
+        'name',
+        'description',
+        'image',
+        'price',
+        'category_id',
+        'quantity_store',
+        'items',
+        'supplier_id'
+    ];
     public static function validate($request)
     {
         $request->validate([
@@ -181,7 +190,7 @@ public function getDiscountedPrice()
 
 public function supplier()
 {
-    return $this->belongsTo(Supplier::class);
+    return $this->belongsTo(Supplier::class, 'supplier_id');
 }
 
 }

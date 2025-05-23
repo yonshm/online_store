@@ -69,6 +69,18 @@
                         <label class="form-label">Description</label>
                         <textarea class="form-control" name="description" rows="3">{{ old('description') }}</textarea>
                     </div>
+                    <div class="mb-3">
+                        <label for="supplier_id" class="form-label">Fournisseur</label>
+                        <select name="supplier_id" id="supplier_id" class="form-control">
+                            <option value="">-- Choisir un fournisseur --</option>
+                            @foreach ($viewData['suppliers'] as $supplier)
+                                <option value="{{ $supplier->id }}"
+                                    {{ old('supplier_id') == $supplier->id ? 'selected' : '' }}>
+                                    {{ $supplier->raison_social }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
@@ -98,6 +110,7 @@
                             <th scope="col">Description</th>
                             <th scope="col">Category</th>
                             <th scope="col">Stock</th>
+                            <th scope="col">Fournisseur</th>
                             <th scope="col">Edit</th>
                             <th scope="col">Delete</th>
                         </tr>
@@ -114,13 +127,14 @@
                                     $bgColor = 'table-success';
                                 }
                             @endphp
-                            <tr class="{{$bgColor}}">
+                            <tr class="{{ $bgColor }}">
                                 <td>{{ $product->getId() }}</td>
                                 <td>{{ $product->getName() }}</td>
                                 <td>{{ $product->getDescription() }}</td>
                                 <td>{{ $product->getCategory() }}</td>
                                 <td>{{ $product->getQuantity_store() }}</td>
 
+                                <td>{{ $product->supplier ? $product->supplier->raison_social : 'N/A' }}</td>
                                 <td>
                                     <a class="btn btn-primary"
                                         href="{{ route('admin.product.edit', ['id' => $product->getId()]) }}">
@@ -131,7 +145,7 @@
                                     <form action="{{ route('admin.product.delete', $product->getId()) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        
+
                                         <button class="btn btn-danger">
                                             <i class="bi-trash"></i>
                                         </button>
@@ -157,7 +171,7 @@
                         .then(response => response.json())
                         .then(data => {
                             let bgColor = '';
-                            
+
                             let rows = '';
 
                             data.forEach(product => {

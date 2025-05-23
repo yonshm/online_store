@@ -1,5 +1,5 @@
-@extends('layouts.app')
-@section('title', 'Ajouter un fournisseur')
+@extends('layouts.admin')
+@section('title', 'Ajouter Fournisseurs')
 @section('content')
 <div class="container mt-4">
     <h1>Ajouter un fournisseur</h1>

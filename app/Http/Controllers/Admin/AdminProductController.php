@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Product;
-use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
 class AdminProductController extends Controller
@@ -16,6 +17,9 @@ class AdminProductController extends Controller
         $viewData['title'] = 'Admin Page - Products - Online Store';
         $viewData['products'] = Product::all();
         $viewData['categories'] = Category::all();
+
+        $viewData['suppliers'] = Supplier::all();
+        // dd($viewData["suppliers"]);
         return view('admin.product.index')->with('viewData', $viewData);
     }
 
@@ -30,6 +34,7 @@ class AdminProductController extends Controller
         $newProduct->setImage('game.png');
         $newProduct->setCategoryId($request->input('category_id'));
         $newProduct->setQuantity_store($request->input('quantity_store'));
+        $newProduct->supplier_id = $request->input('supplier_id');
 
         $newProduct->save();
 
@@ -53,8 +58,11 @@ class AdminProductController extends Controller
     {
         $viewData = [];
         $viewData['title'] = 'Admin Page - Edit Product - Online Store';
-        $viewData['product'] = Product::findOrFail($id);
+        $viewData['product'] = Product::with('supplier')->findOrFail($id);
         $viewData['categories'] = Category::all();
+        $viewData['suppliers'] = Supplier::all();
+        // dd($viewData['product']);
+
         return view('admin.product.edit')->with('viewData', $viewData);
     }
 
@@ -67,6 +75,8 @@ class AdminProductController extends Controller
         $product->setDescription($request->input('description'));
         $product->setPrice($request->input('price'));
         $product->setQuantity_store($request->input('quantity_store'));
+        $product->supplier_id = $request->input('supplier_id');
+        
 
         if ($request->hasFile('image')) {
             $imageName = $product->getId() . '.' . $request->file('image')->extension();
@@ -79,11 +89,9 @@ class AdminProductController extends Controller
     }
 
     public function filter(Request $request)
-{
-    $categoryId = $request->get('category_id');
-    $products = $categoryId && $categoryId != -1 
-        ? Product::with('category')->where('category_id', $categoryId)->get() 
-        : Product::with('category')->get();
-    return response()->json($products);
-}
+    {
+        $categoryId = $request->get('category_id');
+        $products = $categoryId && $categoryId != -1 ? Product::with('category')->where('category_id', $categoryId)->get() : Product::with('category')->get();
+        return response()->json($products);
+    }
 }
