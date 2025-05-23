@@ -17,6 +17,7 @@ class AdminProductController extends Controller
         $viewData['title'] = 'Admin Page - Products - Online Store';
         $viewData['products'] = Product::all();
         $viewData['categories'] = Category::all();
+        
 
         $viewData['suppliers'] = Supplier::all();
         // dd($viewData["suppliers"]);
@@ -90,8 +91,18 @@ class AdminProductController extends Controller
 
     public function filter(Request $request)
     {
-        $categoryId = $request->get('category_id');
-        $products = $categoryId && $categoryId != -1 ? Product::with('category')->where('category_id', $categoryId)->get() : Product::with('category')->get();
+
+        $categoryId = $request->input('category_id');
+        $supplierId = $request->input('supplier_id');
+        $query = Product::with(['category','supplier']);
+
+        if($categoryId && $categoryId !=-1){
+            $query->where('category_id', $categoryId);
+        }
+        if($supplierId && $supplierId != -1){
+            $query->where('supplier_id', $supplierId);
+        }
+        $products = $query->get();
         return response()->json($products);
     }
 }

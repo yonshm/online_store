@@ -99,6 +99,14 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="">
+                    <select name="supplier_id_filtered" id="supplier_id_filtered" class="form-select">
+                        <option value="-1">All Suppliers</option>
+                        @foreach ($viewData['suppliers'] as $supplier)
+                            <option value="{{ $supplier->id}}">{{$supplier->raison_social}}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
 
             <div class="card-body">
@@ -160,10 +168,14 @@
 
         @push('scripts')
             <script>
-                document.getElementById('category_id_filtred').addEventListener('change', function() {
-                    categoryId = this.value;
+                document.getElementById('category_id_filtred').addEventListener('change', fetchFilteredProducts);
+                document.getElementById('supplier_id_filtered').addEventListener('change', fetchFilteredProducts);
 
-                    fetch(`/admin/products/filter?category_id=${categoryId}`, {
+                function fetchFilteredProducts() {
+                    const categoryId = document.getElementById('category_id_filtred').value;
+                    const supplierId = document.getElementById('supplier_id_filtered').value;
+
+                    fetch(`/admin/products/filter?category_id=${categoryId}&&supplier_id=${supplierId}`, {
                             headers: {
                                 'X-Requested-With': 'XMLHttpRequest'
                             }
@@ -188,6 +200,7 @@
                                     <td>${product.description}</td>
                                     <td>${product.category ? product.category.name : "No category"}</td>
                                     <td>${product.quantity_store}</td>
+                                    <td>${product.supplier ? product.supplier.raison_social : 'N/A'}</td>
                                     <td>
                                         <a class="btn btn-primary" href="/admin/product/edit/${product.id}">
                                             <i class="bi-pencil"></i>
@@ -209,14 +222,14 @@
                             if (data.length == 0) {
                                 document.getElementById('product-table-body').innerHTML = `
                                 <tr class="text-center">
-                                    <td colspan='6'>Aucune Product finded</td>    
+                                    <td colspan='8'>Aucune Product finded</td>    
                                 </tr>`
                             }
                         })
                         .catch(error => {
                             console.error('Error fetching product data:', error);
                         });
-                });
+                };
             </script>
         @endpush
     @endsection

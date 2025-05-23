@@ -49,6 +49,7 @@ Route::middleware('admin')->group(function () {
     Route::resource('adminCategories',AdminCategoryController::class);
     Route::get('/admin/products/filter', [AdminProductController::class, 'filter'])->name('admin.product.filter');
 
+
     // discounts routes
     Route::resource('discounts', DiscountController::class);
 
