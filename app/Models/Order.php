@@ -26,7 +26,7 @@ class Order extends Model
             "user_id" => "required|exists:users,id",
         ]);
     }
-    
+
     public function getId()
     {
         return $this->attributes['id'];
@@ -75,6 +75,26 @@ class Order extends Model
     public function setUpdatedAt($updatedAt)
     {
         $this->attributes['updated_at'] = $updatedAt;
+    }
+
+    public function getPaymentMethod()
+    {
+        return $this->attributes['payment_method'];
+    }
+
+    public function setPaymentMethod($paymentMethod)
+    {
+        $this->attributes['payment_method'] = $paymentMethod;
+    }
+
+    public function getPaymentStatus()
+    {
+        return $this->attributes['payment_status'];
+    }
+
+    public function setPaymentStatus($paymentStatus)
+    {
+        $this->attributes['payment_status'] = $paymentStatus;
     }
 
     public function user()

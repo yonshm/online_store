@@ -35,6 +35,11 @@ Route::post('/cart/add/{id}', 'App\Http\Controllers\CartController@add')->name("
 Route::middleware('auth')->group(function () {
     Route::get('/cart/purchase', 'App\Http\Controllers\CartController@purchase')->name("cart.purchase");
     Route::get('/my-account/orders', 'App\Http\Controllers\MyAccountController@orders')->name("myaccount.orders");
+
+    // Payment routes
+    Route::get('/payment/options', 'App\Http\Controllers\PaymentController@showPaymentOptions')->name("payment.options");
+    Route::post('/payment/cash-on-delivery', 'App\Http\Controllers\PaymentController@processCashOnDelivery')->name("payment.cash-on-delivery");
+    Route::post('/payment/online', 'App\Http\Controllers\PaymentController@processOnlinePayment')->name("payment.online");
 });
 
 Route::middleware('admin')->group(function () {
@@ -50,6 +55,11 @@ Route::middleware('admin')->group(function () {
     Route::put('/admin/products/{id}/update', 'App\Http\Controllers\Admin\AdminProductController@update')->name("admin.product.update");
     Route::get('/admin/products/export/csv', 'App\Http\Controllers\Admin\AdminProductController@exportCsv')->name("admin.product.export.csv");
     Route::post('/admin/products/import/csv', 'App\Http\Controllers\Admin\AdminProductController@importCsv')->name("admin.product.import.csv");
+
+    // Orders Routes
+    Route::get('/admin/orders', 'App\Http\Controllers\Admin\AdminOrderController@index')->name("admin.order.index");
+    Route::get('/admin/orders/{id}', 'App\Http\Controllers\Admin\AdminOrderController@show')->name("admin.order.show");
+    Route::put('/admin/orders/{id}/payment-status', 'App\Http\Controllers\Admin\AdminOrderController@updatePaymentStatus')->name("admin.order.update-payment-status");
 
     // Categories Routes
     Route::get('/admin/categories', [AdminCategoryController::class, 'index'])->name("admin.category.index");
