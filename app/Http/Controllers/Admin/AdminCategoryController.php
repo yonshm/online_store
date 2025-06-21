@@ -15,17 +15,14 @@ class AdminCategoryController extends Controller
     {
         $viewData = [];
         $viewData["title"] = "Admin Page - Category - Online Store";
-        $viewData["Categories"] = Category::all();
+        $viewData["Categories"] = Category::paginate(10);
         return view('admin.category.index')->with("viewData", $viewData);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -33,12 +30,12 @@ class AdminCategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'=>'required|string|max:100',
+            'name' => 'required|string|max:100',
             'description' => 'nullable|string'
         ]);
 
-        Category::create($request->only('name','description'));
-        return redirect()->route('adminCategories.index')->with('success','category added!');
+        Category::create($request->only('name', 'description'));
+        return redirect()->route('adminCategories.index')->with('success', 'category added!');
     }
 
     /**
@@ -57,7 +54,7 @@ class AdminCategoryController extends Controller
         $viewData = [];
         $viewData["title"] = "Admin Page - Category - Online Store";
         $viewData["category"] = Category::findOrFail($id);
-        return view('admin.category.edit')->with('viewData',$viewData);
+        return view('admin.category.edit')->with('viewData', $viewData);
     }
 
     /**
@@ -66,16 +63,16 @@ class AdminCategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name'=> 'required|string|max:100',
+            'name' => 'required|string|max:100',
             'description' => 'nullable|string'
         ]);
 
         $category = Category::findOrFail($id);
         $category->update([
-            'name'=> $request->name,
-            'description'=> $request->description,
+            'name' => $request->name,
+            'description' => $request->description,
         ]);
-        return redirect()->route('adminCategories.index')->with('success','category updated successefully!!');
+        return redirect()->route('adminCategories.index')->with('success', 'category updated successefully!!');
     }
 
     /**
@@ -84,7 +81,6 @@ class AdminCategoryController extends Controller
     public function destroy(string $id)
     {
         Category::findOrFail($id)->delete();
-        return redirect()->route('adminCategories.index')->with('success','category DeLeted!');
-
+        return redirect()->route('adminCategories.index')->with('success', 'category DeLeted!');
     }
 }

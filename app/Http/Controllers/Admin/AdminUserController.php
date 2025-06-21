@@ -12,7 +12,7 @@ class AdminUserController extends Controller
 
     public function index()
     {
-        $admins = User::where('role', 'admin')->get();
+        $admins = User::where('role', 'admin')->paginate(10);
         return view('superAdmin.admin.index', compact('admins'));
     }
 
@@ -29,7 +29,7 @@ class AdminUserController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
         ]);
-        
+
 
         User::create([
             'name' => $request->name,

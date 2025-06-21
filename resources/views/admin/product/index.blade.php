@@ -103,7 +103,7 @@
                     <select name="supplier_id_filtered" id="supplier_id_filtered" class="form-select">
                         <option value="-1">{{ __('All Suppliers') }}</option>
                         @foreach ($viewData['suppliers'] as $supplier)
-                            <option value="{{ $supplier->id}}">{{$supplier->raison_social}}</option>
+                            <option value="{{ $supplier->id }}">{{ $supplier->raison_social }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -163,6 +163,11 @@
                         @endforeach
                     </tbody>
                 </table>
+
+                <!-- Pagination -->
+                <div class="d-flex justify-content-center mt-4">
+                    {{ $viewData['products']->links() }}
+                </div>
             </div>
         </div>
 
@@ -171,11 +176,11 @@
                 document.getElementById('category_id_filtred').addEventListener('change', fetchFilteredProducts);
                 document.getElementById('supplier_id_filtered').addEventListener('change', fetchFilteredProducts);
 
-                function fetchFilteredProducts() {
+                function fetchFilteredProducts(page = 1) {
                     const categoryId = document.getElementById('category_id_filtred').value;
                     const supplierId = document.getElementById('supplier_id_filtered').value;
 
-                    fetch(`/admin/products/filter?category_id=${categoryId}&&supplier_id=${supplierId}`, {
+                    fetch(`/admin/products/filter?category_id=${categoryId}&&supplier_id=${supplierId}&page=${page}`, {
                             headers: {
                                 'X-Requested-With': 'XMLHttpRequest'
                             }
@@ -183,10 +188,9 @@
                         .then(response => response.json())
                         .then(data => {
                             let bgColor = '';
-
                             let rows = '';
 
-                            data.forEach(product => {
+                            data.data.forEach(product => {
                                 if (product.quantity_store == 0) {
                                     bgColor = 'table-danger';
                                 } else if (product.quantity_store < 10) {
@@ -219,7 +223,11 @@
                             });
 
                             document.getElementById('product-table-body').innerHTML = rows;
-                            if (data.length == 0) {
+
+                            // Update pagination
+                            updatePagination(data);
+
+                            if (data.data.length == 0) {
                                 document.getElementById('product-table-body').innerHTML = `
                                 <tr class="text-center">
                                     <td colspan='8'>Aucune Product finded</td>    
@@ -229,7 +237,44 @@
                         .catch(error => {
                             console.error('Error fetching product data:', error);
                         });
-                };
+                }
+
+                function updatePagination(data) {
+                    const paginationContainer = document.querySelector('.pagination-container');
+                    if (!paginationContainer) {
+                        const paginationDiv = document.createElement('div');
+                        paginationDiv.className = 'd-flex justify-content-center mt-4 pagination-container';
+                        document.querySelector('.card-body').appendChild(paginationDiv);
+                    }
+
+                    let paginationHtml = '<ul class="pagination">';
+
+                    // Previous page
+                    if (data.prev_page_url) {
+                        paginationHtml +=
+                            `<li class="page-item"><a class="page-link" href="#" onclick="fetchFilteredProducts(${data.current_page - 1})">Previous</a></li>`;
+                    }
+
+                    // Page numbers
+                    for (let i = 1; i <= data.last_page; i++) {
+                        const activeClass = i === data.current_page ? 'active' : '';
+                        paginationHtml +=
+                            `<li class="page-item ${activeClass}"><a class="page-link" href="#" onclick="fetchFilteredProducts(${i})">${i}</a></li>`;
+                    }
+
+                    // Next page
+                    if (data.next_page_url) {
+                        paginationHtml +=
+                            `<li class="page-item"><a class="page-link" href="#" onclick="fetchFilteredProducts(${data.current_page + 1})">Next</a></li>`;
+                    }
+
+                    paginationHtml += '</ul>';
+
+                    const container = document.querySelector('.pagination-container');
+                    if (container) {
+                        container.innerHTML = paginationHtml;
+                    }
+                }
             </script>
         @endpush
     @endsection

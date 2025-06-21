@@ -15,9 +15,9 @@ class AdminProductController extends Controller
     {
         $viewData = [];
         $viewData['title'] = 'Admin Page - Products - Online Store';
-        $viewData['products'] = Product::all();
+        $viewData['products'] = Product::paginate(10);
         $viewData['categories'] = Category::all();
-        
+
 
         $viewData['suppliers'] = Supplier::all();
         // dd($viewData["suppliers"]);
@@ -77,7 +77,7 @@ class AdminProductController extends Controller
         $product->setPrice($request->input('price'));
         $product->setQuantity_store($request->input('quantity_store'));
         $product->supplier_id = $request->input('supplier_id');
-        
+
 
         if ($request->hasFile('image')) {
             $imageName = $product->getId() . '.' . $request->file('image')->extension();
@@ -94,15 +94,15 @@ class AdminProductController extends Controller
 
         $categoryId = $request->input('category_id');
         $supplierId = $request->input('supplier_id');
-        $query = Product::with(['category','supplier']);
+        $query = Product::with(['category', 'supplier']);
 
-        if($categoryId && $categoryId !=-1){
+        if ($categoryId && $categoryId != -1) {
             $query->where('category_id', $categoryId);
         }
-        if($supplierId && $supplierId != -1){
+        if ($supplierId && $supplierId != -1) {
             $query->where('supplier_id', $supplierId);
         }
-        $products = $query->get();
+        $products = $query->paginate(10);
         return response()->json($products);
     }
 }
