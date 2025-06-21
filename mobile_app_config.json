@@ -1,0 +1,135 @@
+{
+    "api": {
+        "base_url": "http://localhost:8000/api",
+        "production_url": "https://your-domain.com/api",
+        "timeout": 30000,
+        "retry_attempts": 3
+    },
+    "endpoints": {
+        "auth": {
+            "register": "/auth/register",
+            "login": "/auth/login",
+            "logout": "/auth/logout",
+            "profile": "/auth/profile"
+        },
+        "products": {
+            "list": "/products",
+            "details": "/products/{id}",
+            "categories": "/categories",
+            "by_category": "/categories/{id}/products"
+        },
+        "orders": {
+            "list": "/orders",
+            "details": "/orders/{id}",
+            "track": "/orders/{id}/track"
+        }
+    },
+    "headers": {
+        "content_type": "application/json",
+        "accept": "application/json",
+        "authorization_prefix": "Bearer"
+    },
+    "order_statuses": {
+        "processing": {
+            "label": "Processing",
+            "color": "#FFA500",
+            "icon": "gear"
+        },
+        "preparing_for_delivery": {
+            "label": "Preparing for Delivery",
+            "color": "#4169E1",
+            "icon": "box"
+        },
+        "out_for_delivery": {
+            "label": "Out for Delivery",
+            "color": "#32CD32",
+            "icon": "truck"
+        },
+        "delivered": {
+            "label": "Delivered",
+            "color": "#228B22",
+            "icon": "check-circle"
+        },
+        "payment_failed": {
+            "label": "Payment Failed",
+            "color": "#DC143C",
+            "icon": "exclamation-triangle"
+        }
+    },
+    "payment_statuses": {
+        "pending": {
+            "label": "Pending",
+            "color": "#FFA500"
+        },
+        "paid": {
+            "label": "Paid",
+            "color": "#32CD32"
+        },
+        "failed": {
+            "label": "Failed",
+            "color": "#DC143C"
+        }
+    },
+    "payment_methods": {
+        "cash_on_delivery": {
+            "label": "Cash on Delivery",
+            "icon": "cash-coin"
+        },
+        "online": {
+            "label": "Online Payment",
+            "icon": "credit-card"
+        }
+    },
+    "stock_statuses": {
+        "in_stock": {
+            "label": "In Stock",
+            "color": "#32CD32"
+        },
+        "low_stock": {
+            "label": "Low Stock",
+            "color": "#FFA500"
+        },
+        "out_of_stock": {
+            "label": "Out of Stock",
+            "color": "#DC143C"
+        }
+    },
+    "app_settings": {
+        "refresh_interval": 30000,
+        "max_retry_attempts": 3,
+        "cache_duration": 300000,
+        "enable_notifications": true,
+        "enable_offline_mode": true
+    },
+    "ui": {
+        "theme": {
+            "primary_color": "#007BFF",
+            "secondary_color": "#6C757D",
+            "success_color": "#28A745",
+            "warning_color": "#FFC107",
+            "danger_color": "#DC3545",
+            "light_color": "#F8F9FA",
+            "dark_color": "#343A40"
+        },
+        "fonts": {
+            "heading": "Roboto-Bold",
+            "body": "Roboto-Regular",
+            "caption": "Roboto-Light"
+        },
+        "spacing": {
+            "xs": 4,
+            "sm": 8,
+            "md": 16,
+            "lg": 24,
+            "xl": 32
+        }
+    },
+    "features": {
+        "enable_push_notifications": true,
+        "enable_order_tracking": true,
+        "enable_product_search": true,
+        "enable_category_filter": true,
+        "enable_offline_caching": true,
+        "enable_biometric_auth": false
+    }
+}
