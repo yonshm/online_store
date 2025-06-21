@@ -48,27 +48,28 @@ Route::middleware('admin')->group(function () {
     Route::delete('/admin/products/{id}/delete', 'App\Http\Controllers\Admin\AdminProductController@delete')->name("admin.product.delete");
     Route::get('/admin/products/{id}/edit', 'App\Http\Controllers\Admin\AdminProductController@edit')->name("admin.product.edit");
     Route::put('/admin/products/{id}/update', 'App\Http\Controllers\Admin\AdminProductController@update')->name("admin.product.update");
-
+    Route::get('/admin/products/export/csv', 'App\Http\Controllers\Admin\AdminProductController@exportCsv')->name("admin.product.export.csv");
+    Route::post('/admin/products/import/csv', 'App\Http\Controllers\Admin\AdminProductController@importCsv')->name("admin.product.import.csv");
 
     // Categories Routes
     Route::get('/admin/categories', [AdminCategoryController::class, 'index'])->name("admin.category.index");
-    Route::resource('adminCategories',AdminCategoryController::class);
+    Route::resource('adminCategories', AdminCategoryController::class);
     Route::get('/admin/products/filter', [AdminProductController::class, 'filter'])->name('admin.product.filter');
 
 
     // discounts routes
     Route::resource('discounts', DiscountController::class);
 
-    Route::get('admin/adminSuppliers', [SupplierController::class , 'index'])->name("admin.supplier.index");
+    Route::get('admin/adminSuppliers', [SupplierController::class, 'index'])->name("admin.supplier.index");
     Route::resource('adminSuppliers', SupplierController::class);
 });
 
-    Route::get('/superAdmin/users', [AdminUserController::class, 'index'])->name('superAdmin.users.index');
-    Route::get('/superAdmin/users/create', [AdminUserController::class, 'create'])->name('superAdmin.users.create');
-    Route::post('/superAdmin/users/store', [AdminUserController::class, 'store'])->name('superAdmin.users.store');
-    Route::get('/superAdmin/users/{id}/edit', [AdminUserController::class, 'edit'])->name('superAdmin.users.edit');
-    Route::put('/superAdmin/users/{id}/update', [AdminUserController::class, 'update'])->name('superAdmin.users.update');
-    Route::delete('/superAdmin/users/{id}/delete', [AdminUserController::class, 'destroy'])->name('superAdmin.users.delete');
+Route::get('/superAdmin/users', [AdminUserController::class, 'index'])->name('superAdmin.users.index');
+Route::get('/superAdmin/users/create', [AdminUserController::class, 'create'])->name('superAdmin.users.create');
+Route::post('/superAdmin/users/store', [AdminUserController::class, 'store'])->name('superAdmin.users.store');
+Route::get('/superAdmin/users/{id}/edit', [AdminUserController::class, 'edit'])->name('superAdmin.users.edit');
+Route::put('/superAdmin/users/{id}/update', [AdminUserController::class, 'update'])->name('superAdmin.users.update');
+Route::delete('/superAdmin/users/{id}/delete', [AdminUserController::class, 'destroy'])->name('superAdmin.users.delete');
 
 
 Auth::routes();

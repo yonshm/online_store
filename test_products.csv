@@ -1,0 +1,4 @@
+ID,Name,Description,Price,Image,Category ID,Category Name,Quantity Store,Supplier ID,Supplier Name,Created At,Updated At
+1,Test Product 1,Description for test product 1,29.99,game.png,1,Electronics,50,1,Test Supplier,2024-01-01 00:00:00,2024-01-01 00:00:00
+2,Test Product 2,Description for test product 2,39.99,game.png,1,Electronics,25,1,Test Supplier,2024-01-01 00:00:00,2024-01-01 00:00:00
+3,Test Product 3,Description for test product 3,19.99,game.png,2,Books,100,1,Test Supplier,2024-01-01 00:00:00,2024-01-01 00:00:00 

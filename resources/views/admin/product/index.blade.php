@@ -91,6 +91,14 @@
                 <div>
                     {{ __('Manage Products') }}
                 </div>
+                <div class="d-flex gap-2">
+                    <a href="{{ route('admin.product.export.csv') }}" class="btn btn-success">
+                        <i class="bi-download"></i> {{ __('Export CSV') }}
+                    </a>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#importModal">
+                        <i class="bi-upload"></i> {{ __('Import CSV') }}
+                    </button>
+                </div>
                 <div class="">
                     <select name="category_id_filtred" id="category_id_filtred" class="form-select">
                         <option value="-1">{{ __('All Categories') }}</option>
@@ -110,6 +118,12 @@
             </div>
 
             <div class="card-body">
+                @if (session('import_message'))
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        {{ session('import_message') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @endif
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
@@ -277,4 +291,38 @@
                 }
             </script>
         @endpush
+
+        <!-- Import CSV Modal -->
+        <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="importModalLabel">{{ __('Import Products from CSV') }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('admin.product.import.csv') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="csv_file" class="form-label">{{ __('Select CSV File') }}</label>
+                                <input type="file" class="form-control" id="csv_file" name="csv_file"
+                                    accept=".csv" required>
+                                <div class="form-text">
+                                    {{ __('The CSV file should have the following columns: ID, Name, Description, Price, Image, Category ID, Category Name, Quantity Store, Supplier ID, Supplier Name, Created At, Updated At') }}
+                                </div>
+                            </div>
+                            <div class="alert alert-info">
+                                <strong>{{ __('Note:') }}</strong>
+                                {{ __('Products with the same name will be updated. New products will be created.') }}
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                            <button type="submit" class="btn btn-primary">{{ __('Import') }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     @endsection
