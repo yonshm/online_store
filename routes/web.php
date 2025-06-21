@@ -28,9 +28,16 @@ Route::get('/about', 'App\Http\Controllers\HomeController@about')->name("home.ab
 Route::get('/products', 'App\Http\Controllers\ProductController@index')->name("product.index");
 Route::get('/products/{id}', 'App\Http\Controllers\ProductController@show')->name("product.show");
 
+// Cart routes with cookie optimization
 Route::get('/cart', 'App\Http\Controllers\CartController@index')->name("cart.index");
 Route::get('/cart/delete', 'App\Http\Controllers\CartController@delete')->name("cart.delete");
 Route::post('/cart/add/{id}', 'App\Http\Controllers\CartController@add')->name("cart.add");
+Route::put('/cart/update/{id}', 'App\Http\Controllers\CartController@update')->name("cart.update");
+Route::delete('/cart/remove/{id}', 'App\Http\Controllers\CartController@remove')->name("cart.remove");
+
+// Cart API routes for AJAX requests
+Route::get('/api/cart/count', 'App\Http\Controllers\CartController@getCartCount')->name("api.cart.count");
+Route::get('/api/cart/details', 'App\Http\Controllers\CartController@getCartDetails')->name("api.cart.details");
 
 Route::middleware('auth')->group(function () {
     Route::get('/cart/purchase', 'App\Http\Controllers\CartController@purchase')->name("cart.purchase");
